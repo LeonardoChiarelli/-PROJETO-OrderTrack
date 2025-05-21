@@ -1,6 +1,9 @@
 package br.com.OrderTrack.Order.domain.model;
 
+import br.com.OrderTrack.Order.domain.dto.CreateOrderDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,4 +41,18 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
+
+    public Order(@Valid CreateOrderDTO dto, Address address, List<OrderItem> items) {
+        this.consumerName = dto.consumerName();
+        this.consumerEmail = dto.consumerEmail();
+        this.shippingAddress = address;
+        this.orderDate = LocalDateTime.now();
+        this.totalPrice = dto.totalPrice();
+        this.status = OrderStatus.NEW;
+        this.items = items;
+    }
+
+    public void changeStatus(@NotNull OrderStatus status) {
+        this.status = status;
+    }
 }

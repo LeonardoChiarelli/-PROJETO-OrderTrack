@@ -1,15 +1,19 @@
 package br.com.OrderTrack.Order.domain.model;
 
+import br.com.OrderTrack.Order.domain.dto.OrderedItemsDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
-@Table(name = "orders_items")
+@Table(name = "order_items")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -30,4 +34,10 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    public OrderItem(OrderedItemsDTO item, Product product) {
+        this.product = product;
+        this.quantity = item.quantity();
+        this.unitPrice = item.unitPrice();
+    }
 }

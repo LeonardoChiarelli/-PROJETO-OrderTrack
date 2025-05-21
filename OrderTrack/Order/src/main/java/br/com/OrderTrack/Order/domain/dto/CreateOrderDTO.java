@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public record CreateOrderDTO(
@@ -20,6 +21,9 @@ public record CreateOrderDTO(
         @NotNull
         @Valid
         AddressDTO shippingAddress,
+
+        @NotNull
+        BigDecimal totalPrice,
 
         @NotNull
         @Valid

@@ -3,6 +3,8 @@ package br.com.OrderTrack.Order.domain.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
+
 public record OrderedItemsDTO(
         Long id,
 
@@ -13,6 +15,6 @@ public record OrderedItemsDTO(
         Integer quantity,
 
         @NotNull
-        Double unitPrice
+        BigDecimal unitPrice
 ) {
 }
