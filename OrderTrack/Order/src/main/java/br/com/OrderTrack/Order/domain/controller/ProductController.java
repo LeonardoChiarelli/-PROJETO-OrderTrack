@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("orderTrack/product")
 public class ProductController {
 
     @Autowired

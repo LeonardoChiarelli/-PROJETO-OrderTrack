@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
+import java.util.Optional;
+
 public interface IProductRepository extends JpaRepository<Product, Long> {
     Boolean existsByName(@NotBlank String nome);
 
@@ -15,4 +17,6 @@ public interface IProductRepository extends JpaRepository<Product, Long> {
 
     @Modifying
     void deleteById(@NotNull Long id);
+
+    Optional<Product> findByName(@NotBlank String name);
 }
