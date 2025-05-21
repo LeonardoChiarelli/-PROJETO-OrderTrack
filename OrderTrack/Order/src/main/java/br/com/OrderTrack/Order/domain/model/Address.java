@@ -1,6 +1,9 @@
 package br.com.OrderTrack.Order.domain.model;
 
+import br.com.OrderTrack.Order.domain.dto.AddressDTO;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +20,14 @@ public class Address {
     public String state;
     public String number;
     public String complement;
+
+    public Address(@NotNull @Valid AddressDTO addressDTO) {
+        this.street = addressDTO.street();
+        this.neighborhood = addressDTO.neighborhood();
+        this.postalCode = addressDTO.postalCode();
+        this.city = addressDTO.city();
+        this.state = addressDTO.state();
+        this.number = addressDTO.number();
+        this.complement = addressDTO.complement();
+    }
 }
