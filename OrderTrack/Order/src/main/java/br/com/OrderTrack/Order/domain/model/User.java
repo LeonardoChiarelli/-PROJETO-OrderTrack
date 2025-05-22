@@ -1,6 +1,8 @@
 package br.com.OrderTrack.Order.domain.model;
 
+import br.com.OrderTrack.Order.domain.dto.SignUpDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,6 +33,13 @@ public class User implements UserDetails {
     @ManyToMany
     @JoinTable(name = "users_profiles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "profile_id"))
     private List<Profile> profiles = new ArrayList<>();
+
+    public User(@Valid SignUpDTO dto, String password, Profile profile) {
+        this.name = dto.name();
+        this.email = dto.email();
+        this.password = password;
+        this.profiles = List.of(profile);
+    }
 
     public Boolean isAdmin() { return this.profiles.stream().anyMatch(Profile::isAdmin); }
     public Boolean isConsumer() { return this.profiles.stream().anyMatch(Profile::isConsumer); }
