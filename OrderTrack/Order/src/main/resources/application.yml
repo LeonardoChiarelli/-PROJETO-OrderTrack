@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: "Order"
+
+app:
+  security:
+    token:
+      secret: "12345678"
