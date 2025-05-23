@@ -21,7 +21,7 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @PostMapping("/create")
+    @PostMapping("/admin/create")
     @Transactional
     public ResponseEntity<ProductDetailsDTO> createProduct(@RequestBody @Valid CreateProductDTO dto, UriComponentsBuilder uriBuilder){
 
@@ -34,7 +34,7 @@ public class ProductController {
         return ResponseEntity.created(uri).body(new ProductDetailsDTO(product, status));
     }
 
-    @GetMapping("/active")
+    @GetMapping("/admin/active")
     public ResponseEntity<Page<ListOfProductsDTO>> listActivatedProducts(@PageableDefault(sort = {"name"})Pageable pageable){
         return ResponseEntity.ok(service.listActivatedProducts(pageable));
     }
@@ -44,21 +44,21 @@ public class ProductController {
         return ResponseEntity.ok(service.listAllProducts(pageable));
     }
 
-    @PatchMapping("/{id}/deactivate")
+    @PatchMapping("/admin/{id}/deactivate")
     @Transactional
     public ResponseEntity<String> deactivateProduct(@PathVariable Long id){
         var product = service.changeProductStauts(id, false);
         return ResponseEntity.ok("Product '%s' was deactivate successfully!".formatted(product.getName()));
     }
 
-    @PatchMapping("/{id}/activate")
+    @PatchMapping("/admin/{id}/activate")
     @Transactional
     public ResponseEntity<String> activateProduct(@PathVariable Long id){
         var product = service.changeProductStauts(id, true);
         return ResponseEntity.ok("Product '%s' was activate successfully.".formatted(product.getName()));
     }
 
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/admin/{id}/delete")
     @Transactional
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
         service.deleteProduct(id);
