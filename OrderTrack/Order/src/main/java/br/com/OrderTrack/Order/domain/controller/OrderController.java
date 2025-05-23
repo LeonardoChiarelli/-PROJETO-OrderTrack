@@ -35,12 +35,12 @@ public class OrderController {
         return ResponseEntity.ok(service.listAllOrders(pageable));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<OrderDetailsDTO> getOrder(@PathVariable Long id){
         return ResponseEntity.ok(new OrderDetailsDTO(service.getOrder(id)));
     }
 
-    @PatchMapping("/changeStatus")
+    @PatchMapping("/admin/changeStatus")
     @Transactional
     public ResponseEntity<OrderDetailsDTO> changeOrderStatus(@RequestBody @Valid ChangeOrderStatus dto){
         var order = service.changeStatus(dto);
