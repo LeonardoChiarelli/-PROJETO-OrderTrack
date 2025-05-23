@@ -44,7 +44,7 @@ public class UserController {
             var authenticationManager = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
             var authentication = manager.authenticate(authenticationManager);
 
-            var tokenJWT = tokenService.gerarToken((User) authentication.getPrincipal());
+            var tokenJWT = tokenService.generateToken((User) authentication.getPrincipal());
 
             return ResponseEntity.ok(tokenJWT);
         } catch (Exception e){
