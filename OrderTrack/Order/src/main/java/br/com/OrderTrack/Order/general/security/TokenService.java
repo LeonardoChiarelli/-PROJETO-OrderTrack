@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 
 @Service
 public class TokenService {
@@ -23,7 +22,7 @@ public class TokenService {
     @Value("${app.security.token.secret}")
     private String tokenSecret;
 
-    public String gerarToken(@NotNull User user) {
+    public String generateToken(@NotNull User user) {
         try{
             var algorithm = Algorithm.HMAC256(tokenSecret);
             return JWT.create()
