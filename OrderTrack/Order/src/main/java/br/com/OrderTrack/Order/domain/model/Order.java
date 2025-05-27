@@ -42,12 +42,12 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
-    public Order(@Valid CreateOrderDTO dto, Address address, List<OrderItem> items) {
+    public Order(@Valid CreateOrderDTO dto, Address address, BigDecimal totalPrice, List<OrderItem> items) {
         this.consumerName = dto.consumerName();
         this.consumerEmail = dto.consumerEmail();
         this.shippingAddress = address;
         this.orderDate = LocalDateTime.now();
-        this.totalPrice = dto.totalPrice();
+        this.totalPrice = totalPrice;
         this.status = OrderStatus.NEW;
         this.items = items;
     }

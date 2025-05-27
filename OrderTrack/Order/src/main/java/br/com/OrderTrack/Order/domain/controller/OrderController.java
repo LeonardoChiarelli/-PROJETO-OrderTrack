@@ -23,7 +23,7 @@ public class OrderController {
     @PostMapping("/create")
     @Transactional
     public ResponseEntity<OrderDetailsDTO> creteOrder(@RequestBody @Valid CreateOrderDTO dto, UriComponentsBuilder uriBuilder){
-        var order = service.creteOrder(dto);
+        var order = service.createOrder(dto);
 
         var uri = uriBuilder.path("{id}").buildAndExpand(order.getId()).toUri();
 

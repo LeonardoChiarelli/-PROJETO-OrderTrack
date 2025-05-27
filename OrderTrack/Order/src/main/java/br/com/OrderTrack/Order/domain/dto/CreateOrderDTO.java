@@ -23,9 +23,6 @@ public record CreateOrderDTO(
         AddressDTO shippingAddress,
 
         @NotNull
-        BigDecimal totalPrice,
-
-        @NotNull
         @Valid
         List<OrderedItemsDTO> items
 ) {

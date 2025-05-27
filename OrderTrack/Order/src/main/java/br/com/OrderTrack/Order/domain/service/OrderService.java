@@ -8,6 +8,7 @@ import br.com.OrderTrack.Order.domain.helper.HelperMethod;
 import br.com.OrderTrack.Order.domain.model.Address;
 import br.com.OrderTrack.Order.domain.model.Order;
 import br.com.OrderTrack.Order.domain.model.OrderItem;
+import br.com.OrderTrack.Order.domain.repository.IInventoryRepository;
 import br.com.OrderTrack.Order.domain.repository.IOrderRepository;
 import br.com.OrderTrack.Order.general.infra.exception.ValidationException;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,18 +27,33 @@ public class OrderService {
     @Autowired
     private IOrderRepository repository;
 
-    public Order creteOrder(@Valid CreateOrderDTO dto) {
+    @Autowired
+    private IInventoryRepository inventoryRepository;
+
+    public Order createOrder(@Valid CreateOrderDTO dto) {
 
         var address = new Address(dto.shippingAddress());
-        
-        return new Order(dto, address, getItems(dto.items()));
+        var totalPrice = getTotalPrice(dto.items());
+        var orderedItems = getItems(dto.items());
+
+        return new Order(dto, address, totalPrice, orderedItems);
     }
 
     public List<OrderItem> getItems(List<OrderedItemsDTO> itemsDTO){
         return itemsDTO.stream().map(item-> {
+            var inventory = inventoryRepository.findByProductName(item.productName()).orElseThrow(() -> new ValidationException("Product not found"));
             var product = HelperMethod.loadProductsByName(item.productName());
+
+            if (inventory.getQuantity() <= item.quantity() && !product.isActive()) { throw new ValidationException("Product was not active or out of stock"); }
+            inventory.decreaseQuantity(item.quantity());
+
             return new OrderItem(item, product);
         }).collect(Collectors.toList());
+    }
+
+    public BigDecimal getTotalPrice(List<OrderedItemsDTO> itemsDTO){
+        return itemsDTO.stream()
+                .map(item -> item.unitPrice().multiply(BigDecimal.valueOf(item.quantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Order changeStatus(@Valid ChangeOrderStatus dto) {
@@ -53,3 +70,4 @@ public class OrderService {
         return repository.findById(id).orElseThrow(() -> new ValidationException("Order not found"));
     }
 }
+
