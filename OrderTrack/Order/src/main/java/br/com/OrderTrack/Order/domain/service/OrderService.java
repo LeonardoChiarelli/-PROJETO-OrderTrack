@@ -39,6 +39,20 @@ public class OrderService {
         return new Order(dto, address, totalPrice, orderedItems);
     }
 
+    public Order changeStatus(@Valid ChangeOrderStatus dto) {
+        var order = repository.findById(dto.id()).orElseThrow(() -> new ValidationException("Order not found"));
+        order.changeStatus(dto.status());
+        return order;
+    }
+
+    public Page<OrderDetailsDTO> listAllOrders(Pageable pageable) {
+        return repository.findAll(pageable).map(OrderDetailsDTO::new);
+    }
+
+    public Order getOrder(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ValidationException("Order not found"));
+    }
+
     public List<OrderItem> getItems(List<OrderedItemsDTO> itemsDTO){
         return itemsDTO.stream().map(item-> {
             var inventory = inventoryRepository.findByProductName(item.productName()).orElseThrow(() -> new ValidationException("Product not found"));
@@ -54,20 +68,6 @@ public class OrderService {
     public BigDecimal getTotalPrice(List<OrderedItemsDTO> itemsDTO){
         return itemsDTO.stream()
                 .map(item -> item.unitPrice().multiply(BigDecimal.valueOf(item.quantity()))).reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
-
-    public Order changeStatus(@Valid ChangeOrderStatus dto) {
-        var order = repository.findById(dto.id()).orElseThrow(() -> new ValidationException("Order not found"));
-        order.changeStatus(dto.status());
-        return order;
-    }
-
-    public Page<OrderDetailsDTO> listAllOrders(Pageable pageable) {
-        return repository.findAll(pageable).map(OrderDetailsDTO::new);
-    }
-
-    public Order getOrder(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ValidationException("Order not found"));
     }
 }
 
