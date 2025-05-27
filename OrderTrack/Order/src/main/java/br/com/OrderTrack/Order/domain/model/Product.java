@@ -30,10 +30,10 @@ public class Product {
     private boolean active;
 
     public Product(@Valid CreateProductDTO dto) {
-        this.name = dto.nome();
-        this.description = dto.descricao();
-        this.category = dto.categoria();
-        this.price = dto.preco();
+        this.name = dto.name();
+        this.description = dto.description();
+        this.category = dto.category();
+        this.price = dto.price();
         this.active = true;
     }
 
