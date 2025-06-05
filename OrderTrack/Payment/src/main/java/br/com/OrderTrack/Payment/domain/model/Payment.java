@@ -45,7 +45,7 @@ public class Payment {
     public Payment(Order order, @Valid MakePaymentDTO dtoPayment, PaymentMethod method) {
         this.totalPrice = order.getTotalPrice();
         this.cardholderName = dtoPayment.cardholderName();
-        this.cardNumber = dtoPayment.carNumber();
+        this.cardNumber = dtoPayment.cardNumber();
         this.expirationDate = dtoPayment.expirationDate();
         this.securityCode = dtoPayment.securityCode();
         this.status = PaymentStatus.PROCESSING;
