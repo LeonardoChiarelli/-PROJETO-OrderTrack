@@ -1,6 +1,8 @@
 package br.com.OrderTrack.Payment.domain.model;
 
+import br.com.OrderTrack.Payment.domain.dto.RegistryAPaymentMethodDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,4 +22,13 @@ public class PaymentMethod {
 
     private String name;
     private Boolean active;
+
+    public PaymentMethod(@Valid RegistryAPaymentMethodDTO dto) {
+        this.name = dto.name();
+        this.active = true;
+    }
+
+    public void changeStatus(boolean status) {
+        this.active = status;
+    }
 }
