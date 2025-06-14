@@ -1,6 +1,15 @@
 spring:
   application:
     name: "Order"
+  datasource:
+    url:
+    username:
+    password:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 app:
   security:
